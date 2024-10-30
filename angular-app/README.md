@@ -36,3 +36,16 @@ This project is with node 20
 ``` bash
 ng generate component name-component
 ```
+## ERROR ReferenceError: sessionStorage is not defined
+To change the rendering, go to angular.json,and add 
+```json
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "ssr":false,
+              "prerender":false
+              }
+```
+
+And from app.config delete the providerClienteHydration
