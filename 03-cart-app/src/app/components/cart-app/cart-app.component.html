@@ -1,11 +1,14 @@
+<navbar [items]="items" (openEventEmitter)="openCart()" />
+
+  <div class="container">
+
 <h2>Catalogo de productos </h2>
-<button class="btn btn-info btn-sm" (click)="openCart()">show cart {{items.length}}</button>
 <div class="row">
     <div  [className]="showCart?'col-9':'col'">
         <catalog [products]="products" (productEventEmitter)="onAddCart($event)"/>
     </div>
     @if(showCart){
-        <div class="col-3">
+        <div class="col-1">
             @if(items.length>0){
                 <button class="btn btn-secondary float-end" (click)="openCart()">
                    X
@@ -22,3 +25,4 @@
     }
 </div>
 
+</div>
