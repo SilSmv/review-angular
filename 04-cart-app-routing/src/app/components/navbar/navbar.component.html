@@ -7,11 +7,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" 
+            href="#"
+            [routerLink]="['/catalog']" [state]="{products}">Catalog</a>
           </li>
     
           <li class="nav-item">
-            <a class="nav-link"  (click)="openCart()" role="button" >Cart {{items.length}}</a>
+            <a 
+            [routerLink]="['/cart']"
+            [state]="{items:items,total:total}"
+            class="nav-link"   
+            role="button" >Cart {{items.length}}</a>
           </li>
         </ul>
       </div>
