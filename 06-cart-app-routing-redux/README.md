@@ -33,3 +33,23 @@ https://sweetalert2.github.io/#examples
 ## NGRX Efects 
 
 ng add @ngrx/effect
+
+## TypeError: Cannot read properties of undefined (reading 'pipe')
+Add     
+```json
+"useDefineForClassFields": false,
+```
+to tsconfig.json compiler options
+
+or you can change inject to 
+```typescript
+    loadProduct$ = createEffect(
+        () => inject(Actions).pipe(
+            ofType(load),
+            exhaustMap(() => this.service.findAll())
+        ).pipe(
+            map(products => (findAll({ products }))),
+            catchError(()=> EMPTY)
+        )
+    );
+```

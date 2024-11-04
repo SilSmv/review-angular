@@ -1,26 +1,26 @@
-import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { inject, Injectable } from "@angular/core";
 import { ProductService } from "../../services/product.service";
-import { catchError, EMPTY, exhaustMap,map } from "rxjs";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { findAll, load } from "../products.actions";
+import { EMPTY, catchError, exhaustMap, map } from "rxjs";
 
 @Injectable()
-export class ProductEffects{
+export class ProductsEffects {
 
     loadProduct$ = createEffect(
-        () => this.actions$.pipe(
+        () => inject(Actions).pipe(
             ofType(load),
-            exhaustMap(() =>  this.service.findAll())
+            exhaustMap(() => this.service.findAll())
         ).pipe(
-            map(products => (findAll({products}))),
-            catchError(() => EMPTY)
+            map(products => (findAll({ products }))),
+            catchError(()=> EMPTY)
         )
     );
 
-    constructor(private actions$:Actions,
-        private service: ProductService
-    ){
-        console.log('action')
-        console.log(actions$);
+    constructor(
+        private actions$: Actions,
+        private service: ProductService) {
+        
     }
+
 }
