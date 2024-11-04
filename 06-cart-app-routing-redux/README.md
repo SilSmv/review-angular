@@ -1,4 +1,4 @@
-# 04CounterAppRedux
+# 03CartApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
 
@@ -26,6 +26,6 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-## Ngredux documentation 
+## Confirm dialog 
 
-https://ngrx.io/guide/store-devtools/install
+https://sweetalert2.github.io/#examples

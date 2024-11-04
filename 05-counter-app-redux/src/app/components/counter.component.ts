@@ -21,7 +21,7 @@ export class CounterComponent {
 
   increment():void{
     // this.counter++;
-    this.store.dispatch(increment())
+    this.store.dispatch(increment({add:3}));
   console.log('incrementando...')
 }
 decrement():void{
