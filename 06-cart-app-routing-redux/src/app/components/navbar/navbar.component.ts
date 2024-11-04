@@ -11,6 +11,5 @@ import { Product } from '../../models/product';
 })
 export class NavbarComponent {
   @Input() items:CartItems[] = [];
-  @Input() total:Number = 0;
 
 }
