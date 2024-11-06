@@ -14,6 +14,7 @@ import { UserService } from '../../services/user.service';
 })
 export class UserFormComponent implements OnInit{
   user:User;
+  error: any ={};
 
 
 
@@ -24,6 +25,7 @@ export class UserFormComponent implements OnInit{
       this.user = new User();
   }
   ngOnInit(): void {
+    this.sharingData.errorEventEmitter.subscribe(error => this.error = error)
     this.sharingData.selectUserEventEmitter.subscribe(user => this.user = user);
 
 
@@ -41,12 +43,12 @@ export class UserFormComponent implements OnInit{
 
   onSubmit(userForm: NgForm):void{
 
-    if(userForm.valid){
+    // if(userForm.valid){
       this.sharingData.newUserEventEmitter.emit(this.user)
-      console.log(this.user);
-    }
-    userForm.reset();
-    userForm.resetForm();
+    //   console.log(this.user);
+    // }
+    // userForm.reset();
+    // userForm.resetForm();
   }
   onClear(userForm:NgForm
   ){

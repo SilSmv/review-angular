@@ -14,16 +14,22 @@
                     name="name"
                     [(ngModel)] = "user.name"
                     class="form-control my-2"
-                    required
                     #name = "ngModel"
                     >
+                    @if(error?.name){
+                        <div class="text-danger">
+                            {{error.name}}
+                        </div>
+                    }    
+
+<!-- 
                     @if(name.invalid && (name.dirty || name.touched)){
                         @if(name.errors!['required']){
                             <div class="text-danger" >
                                 El nombre es requerido
                             </div>
                         }
-                    }
+                    } -->
             
                 </div>
                 <div>
@@ -32,16 +38,23 @@
                     name="lastname"
                     [(ngModel)] = "user.lastname"
                     class="form-control my-2"
-                    required
                     #lastname = "ngModel"       
                     >
-                    @if(lastname.invalid && (lastname.dirty || lastname.touched)){
+                    @if(error?.lastname){
+                        <div class="text-danger">
+                            {{error.lastname}}
+                        </div>
+                    }    
+
+
+
+                    <!-- @if(lastname.invalid && (lastname.dirty || lastname.touched)){
                         @if(lastname.errors!['required']){
                             <div class="text-danger">
                                 El apellido es requerido
                             </div>
                         }
-                    }
+                    } -->
                 </div>
                 <div>
                     <input 
@@ -112,7 +125,11 @@
                     }
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary  m-2" [disabled]="userForm.invalid">
+                    <!-- <button type="submit" class="btn btn-primary  m-2" 
+                    [disabled]="userForm.invalid"
+                    > -->
+                    <button type="submit" class="btn btn-primary  m-2" 
+                    >
                         {{(user.id>0)? 'Update':'Create'}}
                     </button>
                     <button type="button" (click)="onClear(userForm)" class="btn btn-secondary my-2" >

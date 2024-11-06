@@ -34,7 +34,7 @@ export class UserAppComponent implements OnInit{
   }
   findUserById(){
     this.sharingData.findUserByIdEventEmitter.subscribe(id => {
-      const user  = this.users.find(user => user.id = id)
+      const user  = this.users.find(user => user.id === id)
       this.sharingData.selectUserEventEmitter.emit(user);
     })
 
@@ -42,30 +42,48 @@ export class UserAppComponent implements OnInit{
   addUser(){
     this.sharingData.newUserEventEmitter.subscribe(user=>{
       if(user.id>0){
-        this.service.update(user).subscribe(userUpdated => {
+        this.service.update(user).subscribe(
+        {next: (userUpdated) => {
           this.users = this.users.map(u => (u.id === userUpdated.id)?{... userUpdated}:u)
-
           this.router.navigate(['/users'], {state: {users:this.users}});
-        });
+          Swal.fire({
+            title: "Actualizado!",
+            text: "Se ha editado el elemento!",
+            icon: "success"
+          });
+        },
+      error: (err) =>{
+        if(err.status ==400){
+          this.sharingData.errorEventEmitter.emit(err.error);
+        }
+
+      }})
         
         
       }else{
-        this.service.create(user).subscribe(userNew => {
+        this.service.create(user).subscribe(
+          {next:(userNew) => {
           // this.users = [... this.users,{...user,id:new Date().getTime()}];
           this.users = [... this.users,{...userNew}];
           this.router.navigate(['/users'], {state: {users:this.users}});
+          Swal.fire({
+            title: "Guardado!",
+            text: "Se ha guardado el elemento!",
+            icon: "success"
+          });
+          },
+          error: (err) =>{
+            if(err.status ==400){
+              this.sharingData.errorEventEmitter.emit(err.error);
+            }
 
-        }
-
-        )
+    
+          }
+        }        )
         
       }
 
-      Swal.fire({
-        title: "Guardado!",
-        text: "Se ha guardado el elemento!",
-        icon: "success"
-      });
+
 
     })
   
