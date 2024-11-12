@@ -101,29 +101,34 @@
                         }
                     }
                 </div>
-                <div>
-                    <input 
-                    placeholder="Password"
-                    name="password"
-                    type="password"
-                    [(ngModel)] = "user.password"
-                    class="form-control my-2"
-                    required
-                    #password = "ngModel"
-                    minlength="6">
-                    @if(password.invalid && (password.dirty || password.touched)){
-                        @if(password.errors!['required']){
-                            <div class="text-danger">
-                                La constraseña es requerida
-                            </div>
+
+                @if(user.id===0){
+                    <div>
+                        <input 
+                        placeholder="Password"
+                        name="password"
+                        type="password"
+                        [(ngModel)] = "user.password"
+                        class="form-control my-2"
+                        required
+                        #password = "ngModel"
+                        minlength="6">
+                        @if(password.invalid && (password.dirty || password.touched)){
+                            @if(password.errors!['required']){
+                                <div class="text-danger">
+                                    La constraseña es requerida
+                                </div>
+                            }
+                            @if(username.errors!['minlength']){
+                                <div class="text-danger">
+                                    La contraseña debe tener al menos 6 caracteres
+                                </div>
+                            }
                         }
-                        @if(username.errors!['minlength']){
-                            <div class="text-danger">
-                                La contraseña debe tener al menos 6 caracteres
-                            </div>
-                        }
-                    }
-                </div>
+                    </div>
+
+                }
+
                 <div>
                     <!-- <button type="submit" class="btn btn-primary  m-2" 
                     [disabled]="userForm.invalid"
