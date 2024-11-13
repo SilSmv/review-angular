@@ -5,6 +5,8 @@ import { UserService } from '../../services/user.service';
 import { SharingDataService } from '../../services/sharing-data.service';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { load } from '../../store/users.action';
 
 @Component({
   selector: 'user',
@@ -22,28 +24,20 @@ export class UserComponent implements OnInit{
   constructor(private sharingData: SharingDataService,
     private service: UserService, private router:Router,
     private authService:AuthService,
+    private store: Store<{users:any}>,
   private route:ActivatedRoute){
-    if(this.router.getCurrentNavigation()?.extras.state){
-      this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
-      this.paginator = this.router.getCurrentNavigation()?.extras.state!['paginator'];
-    }
-    // else{
-    //   this.service.findAll().subscribe(users => this.users = users)
-    // }
+    this.store.select('users').subscribe(state => {
+      this.users = state.users;
+      this.paginator = state.paginator
+    })
   }
   ngOnInit(): void {
-    console.log('Cosulta al backend')
-    if(this.users ===undefined || this.users ==null || this.users.length == 0 ){
-      // this.service.findAll().subscribe(users => this.users = users)
-      this.route.paramMap.subscribe(params =>{
-        const page = +(params.get('page')|| '0')
-        this.service.findAllPageable(page).subscribe(pageable  => {
-          this.users = pageable.content as User[]
-          this.paginator = pageable;
-          this.sharingData.pageUsersEventEmitter.emit({users:this.users,paginator:this.paginator})})
-          
-      })
-    }
+    this.route.paramMap.subscribe(params =>{
+      const page = +(params.get('page')|| '0')
+      this.store.dispatch(load({page}))
+    
+        
+    })
 
   }
 

@@ -5,6 +5,8 @@ import { NgFor } from '@angular/common';
 import { SharingDataService } from '../../services/sharing-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Store } from '@ngrx/store';
+import { add } from '../../store/users.action';
 
 @Component({
   selector: 'user-form',
@@ -20,9 +22,14 @@ export class UserFormComponent implements OnInit{
 
   constructor(private sharingData: SharingDataService,
     private service:UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<{users:any}>
   ){
       this.user = new User();
+      this.store.select('users').subscribe(state  => {
+        this.error = state.errors;
+        this.user = {...state.user}
+      })
   }
   ngOnInit(): void {
     this.sharingData.errorEventEmitter.subscribe(error => this.error = error)
@@ -42,13 +49,8 @@ export class UserFormComponent implements OnInit{
   }
 
   onSubmit(userForm: NgForm):void{
+    this.store.dispatch(add({userNew: this.user}))
 
-    // if(userForm.valid){
-      this.sharingData.newUserEventEmitter.emit(this.user)
-    //   console.log(this.user);
-    // }
-    // userForm.reset();
-    // userForm.resetForm();
   }
   onClear(userForm:NgForm
   ){
