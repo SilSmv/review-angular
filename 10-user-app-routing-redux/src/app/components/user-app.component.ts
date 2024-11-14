@@ -7,7 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SharingDataService } from '../services/sharing-data.service';
 import { AuthService } from '../services/auth.service';
 import { Store } from '@ngrx/store';
-import { add, find, findAll, remove, setPaginator, update } from '../store/users.action';
+import { remove } from '../store/users.action';
 
 @Component({
   selector: 'user-app',
@@ -20,10 +20,8 @@ export class UserAppComponent implements OnInit{
   user!: User;
 
   constructor(
-    private service: UserService,
     private sharingData: SharingDataService,
     private router:Router,
-    private route:ActivatedRoute,
     private authService: AuthService,
     private store: Store<{users:any}>
   ){
@@ -34,10 +32,7 @@ export class UserAppComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    this.addUser();
-    this.removeUser();
-    this.findUserById();
-    this.pageUsersEvent();
+
     this.handlerLogin();
     
   }
@@ -76,103 +71,6 @@ export class UserAppComponent implements OnInit{
 
   }
 
-  pageUsersEvent(){
-    this.sharingData.pageUsersEventEmitter.subscribe(pageable =>{
-      // this.users = pageable.users;
-      // this.paginator = pageable; 
-      this.store.dispatch(findAll({users: pageable.users}))
-      this.store.dispatch(setPaginator({paginator: pageable.paginator}))
-    })
-  }
-
-  findUserById(){
-    this.sharingData.findUserByIdEventEmitter.subscribe(id => {
-      this.store.dispatch(find({id}))
-      this.sharingData.selectUserEventEmitter.emit(this.user);
-    })
-
-  }
-  addUser(){
-    this.sharingData.newUserEventEmitter.subscribe(user=>{
-      if(user.id>0){
-        this.service.update(user).subscribe(
-        {next: (userUpdated) => {
-          // this.users = this.users.map(u => (u.id === userUpdated.id)?{... userUpdated}:u)
-          this.store.dispatch(update({userUpdated}));
-          
-        },
-      error: (err) =>{
-        if(err.status ==400){
-          this.sharingData.errorEventEmitter.emit(err.error);
-        }
-
-      }})
-        
-        
-      }else{
-        this.service.create(user).subscribe(
-          {next:(userNew) => {
-          this.store.dispatch(add({userNew}));
-          this.router.navigate(['/users']);
-          Swal.fire({
-            title: "Guardado!",
-            text: "Se ha guardado el elemento!",
-            icon: "success"
-          });
-          },
-          error: (err) =>{
-            if(err.status ==400){
-              this.sharingData.errorEventEmitter.emit(err.error);
-            }
-
-    
-          }
-        }        )
-        
-      }
-
-
-
-    })
-  
-  }
-  removeUser(){
-    this.sharingData.idUserEventEmitter.subscribe(id =>{
-
-      Swal.fire({
-        title: "Esta seguro que quiere eliminar?",
-        text: "Cuidado el dato del sistema sera eliminado!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-
-          this.service.remove(id).subscribe(() =>{
-            // this.users = this.users.filter(user => user.id!==id);
-            this.store.dispatch(remove({id}))
-            this.router.navigate(['/users/create'],{skipLocationChange:true}).then(() =>{
-              this.router.navigate(['/users'],);
-            })
-
-          });
-
-
-          Swal.fire({
-            title: "Eliminado!",
-            text: "Usuario eliminado con exito .",
-            icon: "success"
-          });
-        }
-      });
-
-    })
-   
-
- 
-  }
 
 
 }
