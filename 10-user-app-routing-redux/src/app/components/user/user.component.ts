@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { SharingDataService } from '../../services/sharing-data.service';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { AuthService } from '../../services/auth.service';
 import { Store } from '@ngrx/store';
-import { load, remove } from '../../store/users.action';
+import { load, remove } from '../../store/users/users.action';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,8 +20,7 @@ export class UserComponent implements OnInit{
   paginator:any = {}
 
 
-  constructor(private sharingData: SharingDataService,
-    private service: UserService, private router:Router,
+  constructor(private router:Router,
     private authService:AuthService,
     private store: Store<{users:any}>,
   private route:ActivatedRoute){

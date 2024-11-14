@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, EMPTY, exhaustMap, map, of, tap } from "rxjs";
 import { add, addSuccess, findAll, findAllPageable, load, remove, removeSuccess, setErrors, setPaginator, update, updateSucess } from "./users.action";
-import { User } from "../models/user";
-import { UserService } from "../services/user.service";
+import { User } from "../../models/user";
+import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
 import { Router } from "@angular/router";
 
@@ -49,10 +49,10 @@ export class UsersEffects{
             tap(() => {
                 this.router.navigate(['/users']);
                 Swal.fire({
-                    title: "Actualizado!",
-                    text: "Se ha editado el elemento!",
+                    title: "Guardado!",
+                    text: "Se ha guardado el elemento!",
                     icon: "success"
-                });
+                  });
             })
 
         ),{dispatch:false}
@@ -76,10 +76,10 @@ export class UsersEffects{
             tap(() => {
                 this.router.navigate(['/users']);
                 Swal.fire({
-                    title: "Guardado!",
-                    text: "Se ha guardado el elemento!",
+                    title: "Actualizado!",
+                    text: "Se ha editado el elemento!",
                     icon: "success"
-                  });
+                });
             })
 
         ),{dispatch:false}
