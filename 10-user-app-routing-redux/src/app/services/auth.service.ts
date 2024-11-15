@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { login, logout } from '../store/auth/auth.actions';
+import {  logout } from '../store/auth/auth.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,6 @@ import { login, logout } from '../store/auth/auth.actions';
 export class AuthService {
   private url: string = 'http://localhost:8080/login';
 
-  private _token: string | undefined;
   private _user: any;
 
 
@@ -24,7 +23,6 @@ export class AuthService {
 
   }
   set user(user:any){
-    this.store.dispatch(login({login:user}));
     sessionStorage.setItem('login', JSON.stringify(user));
 
   }

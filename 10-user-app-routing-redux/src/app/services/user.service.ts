@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  private users :User[]=[]
 
   private url:string = 'http://localhost:8080/api/users';
 

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, EMPTY, exhaustMap, map, of, tap } from "rxjs";
-import { add, addSuccess, findAll, findAllPageable, load, remove, removeSuccess, setErrors, setPaginator, update, updateSucess } from "./users.action";
+import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { add, addSuccess, findAllPageable, load, remove, removeSuccess, setErrors, setPaginator, update, updateSucess } from "./users.action";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
@@ -11,17 +11,23 @@ import { Router } from "@angular/router";
 export class UsersEffects{
 
     loadUsers$ = createEffect(
-        ()=> this.actions$.pipe(
+        () => this.actions$.pipe(
             ofType(load),
             exhaustMap( action => this.service.findAllPageable(action.page)
-            .pipe(                map( pageable => {
+            .pipe(                
+                map( pageable => {
                 const users = pageable.content as User[];
                 const paginator = pageable;
+                console.log('Action done-----------')
 
                 setPaginator({paginator});
                 return findAllPageable({users,paginator})
             }),
-            catchError((error) => of(error))
+            catchError((error) =>{
+                console.log(error.error.message)
+                return of(error)
+               
+            })
 
 
             )
@@ -34,7 +40,6 @@ export class UsersEffects{
             exhaustMap(action => this.service.create(action.userNew)
             .pipe(
                 map(userNew => {
-                    console.log("deajkfhdjkh")
                     return addSuccess({userNew})
                 }), catchError( error =>error.status === 400 ? of(setErrors({userForm: action.userNew,errors: error.error})):of(error))
             )
