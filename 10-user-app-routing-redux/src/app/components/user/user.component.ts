@@ -18,6 +18,7 @@ export class UserComponent implements OnInit{
   pageUrl= '/users/page';
   users:User[] = []
   paginator:any = {}
+  loading:boolean=true;
 
 
   constructor(private router:Router,
@@ -27,6 +28,7 @@ export class UserComponent implements OnInit{
     this.store.select('users').subscribe(state => {
       this.users = state.users;
       this.paginator = state.paginator
+      this.loading = state.loading
     })
   }
   ngOnInit(): void {

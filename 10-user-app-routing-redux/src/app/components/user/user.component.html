@@ -1,63 +1,69 @@
 
 <h3>{{title}}</h3>
 
+
 @if(admin){
     <button class="btn btn-primary my-3" [routerLink]="['/users/create']">
         Crear usuario
   </button>
 }
+@if(loading){
+    <div class="d-clock spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+}@else{
 
-
-@if(users.length>0){
-    <table class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>lastname</th>
-                <th>email</th>
-                <th>username</th>
-                @if(admin){
-                    <th>remove</th>
-                    <th>update</th>
-                }
-
-            </tr>
-        </thead>
-        <tbody>
-            @for(user of users; track $index){
+    @if(users.length>0){
+        <table class="table table-hover table-striped">
+            <thead>
                 <tr>
-                    <td>{{user.id}}</td>
-                    <td>{{user.name}}</td>
-                    <td>{{user.lastname}}</td>
-                    <td>{{user.email}}</td>                   
-                    <td>{{user.username}}</td>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>lastname</th>
+                    <th>email</th>
+                    <th>username</th>
                     @if(admin){
-                        <td>
-                            <button 
-                            class="btn btn-danger btn-sm"
-                            (click)="onRemoveUser(user.id)">
-                                remove
-                            </button>
-                        </td>
-                        <td>
-                            <button 
-                            class="btn btn-info btn-sm"
-                            [routerLink]="['/users/edit',user.id]">
-                                update
-                            </button>
-                        </td>
+                        <th>remove</th>
+                        <th>update</th>
                     }
 
                 </tr>
+            </thead>
+            <tbody>
+                @for(user of users; track $index){
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.lastname}}</td>
+                        <td>{{user.email}}</td>                   
+                        <td>{{user.username}}</td>
+                        @if(admin){
+                            <td>
+                                <button 
+                                class="btn btn-danger btn-sm"
+                                (click)="onRemoveUser(user.id)">
+                                    remove
+                                </button>
+                            </td>
+                            <td>
+                                <button 
+                                class="btn btn-info btn-sm"
+                                [routerLink]="['/users/edit',user.id]">
+                                    update
+                                </button>
+                            </td>
+                        }
 
-            }
-    
-        </tbody>
-    </table>
-}@else{
-    <div class="alert alert-warning"> 
-        No hay registros en el sistema!
-    </div>
+                    </tr>
+
+                }
+        
+            </tbody>
+        </table>
+    }@else{
+        <div class="alert alert-warning"> 
+            No hay registros en el sistema!
+        </div>
+    }
+    <paginator [paginator]="paginator" [url]="pageUrl" />
 }
-<paginator [paginator]="paginator" [url]="pageUrl" />

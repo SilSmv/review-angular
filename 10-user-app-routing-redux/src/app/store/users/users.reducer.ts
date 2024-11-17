@@ -9,65 +9,74 @@ export const usersReducer = createReducer(
         users,
         paginator:{},
         user,
-        erros:{}
+        erros:{},
+        loading :true
     },
     on(findAll,(state,{users}) => ({
             users: [...users],
             paginator: state.paginator,
             user: state.user,
-            erros: state.erros
+            erros: state.erros,
+            loading:false
     }
     )), 
     on(findAllPageable,(state,{users, paginator}) => ({
         users: [...users],
         paginator: {...paginator},
         user: state.user,
-        erros: state.erros
+        erros: state.erros,
+        loading:false
 }
 )), 
     on(find, (state,{id}) => ({
         users: state.users,
         paginator: state.paginator,
         user: state.users.find(user => id === user.id) || new User(),
-        erros: state.erros
+        erros: state.erros,
+        loading:state.loading
     })),
     on(setPaginator,(state,{paginator})=>({
         users: state.users,
         paginator: {...paginator},
         user: state.user,
-        erros: state.erros
+        erros: state.erros,
+        loading:state.loading
 
     })), 
     on(addSuccess,(state,{userNew}) =>({
         users: [...state.users,{...userNew}],
         paginator: state.paginator,
         user: {...user},
-        erros: {}
+        erros: {},
+        loading:state.loading
     })),
     on(updateSucess,(state,{userUpdated})=>({
         users:state.users.map(u => (u.id == userUpdated.id)? {...userUpdated}:u),
         paginator: state.paginator,
         user: {...user},
-        erros: {}
+        erros: {},
+        loading:state.loading
 
     })),
     on(removeSuccess, (state,{id}) => ({
         users: state.users.filter(user => user.id != id),
         paginator: state.paginator,
         user: state.user,
-        erros: state.erros
+        erros: state.erros,
+        loading:state.loading
     })),
     on(setErrors, (state,{userForm,errors}) => ({
         users: state.users,
         paginator: state.paginator,
         user: {...userForm},
-        erros: {...errors}
+        erros: {...errors},
+        loading:state.loading
     })),
     on(resetUser,(state =>({
         users: state.users,
         paginator: state.paginator,
         user: {...user},
-        erros: {}
-
+        erros: {},
+        loading:state.loading
     })))
 )

@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {  logout } from '../store/auth/auth.actions';
+import { BACKEND_URL } from '../config/config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url: string = 'http://localhost:8080/login';
+  // private url: string = 'http://localhost:8080/login';
+  private url:string = BACKEND_URL+'/login';
 
   private _user: any;
 
